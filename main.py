@@ -12,8 +12,13 @@ root.title("TEST")
 
 root.geometry("680x384")
 
+i = PhotoImage(file="C:/Users/carly/Downloads/1.png")
+
 imagen_luagar = tkinter.Frame(root, bg="red")
 imagen_luagar.pack(expand=1, fill=tkinter.BOTH)
+
+imagen = tkinter.Label(imagen_luagar, image=i)
+imagen.place(relwidth=0.8, relx=0.1)
 
 b1_imagen = PhotoImage(file="C:/Users/carly/Documents/boton_1.png")
 
@@ -44,7 +49,7 @@ boton_2.pack(side="right")
 #empieza la logica
 def pregunta_inicial():
     texto.set("Bienvenido al nuestro quest! Cuando vimos lo que nos habias dicho hacer, lo decidimos hacer \n cada uno un script y luego enviartelos todos, a la semana de empezar nos dijimos \n-Y si lo hacemos a lo grande!- Y decidimos aprender a hacer GUI con tkinter, y aqui esta \n nuestra version del juego, esperamos que la disfrutes! ")
-    t = Timer(1, continuar) #modificar a 10 cuando se acabe el testeo
+    t = Timer(10, continuar) #modificar a 10 cuando se acabe el testeo
     t.start()
     
 def continuar():
