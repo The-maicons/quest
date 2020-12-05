@@ -5,6 +5,7 @@ import threading
 from threading import Timer
 from tkinter import filedialog, Text
 from tkinter import *
+import os
 
 #empieza la parte de inicio de la UI
 root = tkinter.Tk()
@@ -12,7 +13,12 @@ root.title("TEST")
 
 root.geometry("680x384")
 
-i = PhotoImage(file="C:/Users/carly/Downloads/1.png")
+lugar_del_archivo = os.path.dirname(os.path.abspath(__file__))
+archivo = os.path.join(lugar_del_archivo, "1.png")
+
+i = PhotoImage(file=archivo)
+print(archivo)
+
 
 imagen_luagar = tkinter.Frame(root, bg="red")
 imagen_luagar.pack(expand=1, fill=tkinter.BOTH)
