@@ -26,7 +26,7 @@ imagen_luagar.pack(expand=1, fill=tkinter.BOTH)
 imagen = tkinter.Label(imagen_luagar, image=i)
 
 
-b1_imagen = PhotoImage(file="C:/Users/carly/Documents/boton_1.png")
+
 
 texto_lugar = tkinter.Frame(root, bg="blue")
 texto_lugar.place(relwidth=0.8, relheight=0.2, relx=0.1, rely=0.8)
