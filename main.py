@@ -20,13 +20,13 @@ i = PhotoImage(file=archivo)
 print(archivo)
 
 
-imagen_luagar = tkinter.Frame(root, bg="red")
+imagen_luagar = tkinter.Frame(root, bg="grey") #se ha puesto gris para no dañar a la vista, de normal es blanco, hasta que se pongan las imagenes
 imagen_luagar.pack(expand=1, fill=tkinter.BOTH)
 
 imagen = tkinter.Label(imagen_luagar, image=i)
 
 
-
+texto_palo = tkinter.Label(imagen_luagar, text="Tienes el palo", fg="gold")
 
 texto_lugar = tkinter.Frame(root, bg="blue")
 texto_lugar.place(relwidth=0.8, relheight=0.2, relx=0.1, rely=0.8)
@@ -113,7 +113,7 @@ def pregunta_12():
         boton_2.config(command=escotilla)
 
 
-
+# Parte del codigo dedicada a la eleccion de la escotilla
 def escotilla():
     texto.set("Al cruzar la escotilla te encuentras un palo, lo quieres recoger?")
     texto_boton1.set("Si")
@@ -140,19 +140,22 @@ def no_palo():
         return numero_random
 
 
-
+def destruccion():
+    texto_palo.place_forget()
 
 
 def si_palo():
     global p3
     global has_cogido_palo
-    
+    texto_palo.place()
     has_cogido_palo = True
     if p3 == False:
         texto.set("Al salir de la tuberia debajo de la escotilla, te encuentras una rata la cual te dice:")
         t2 = Timer(3, si_palo)
         t2.start()
         p3 = True
+        texto_palo.place(rely=0.1)
+        texto_palo.after(5000, destruccion) #se hace asi para que sea como una notificacion, porque tengo planteado hacer boton de inventario (I)
     elif p3 == True:
         texto.set(f"-Hola forastero, me gustaria que respondieras a una simple pregunta cuanto es 13 x {numero_random}")
         caja_input.pack(side="bottom")
@@ -160,7 +163,7 @@ def si_palo():
         boton_1.config(command=revisar)
         texto_boton2.set("")
         boton_2.config(command=None)
-        return numero_random
+    return has_cogido_palo
 
 
 def revisar():
@@ -181,11 +184,30 @@ def revisar():
         boton_2.config(command=quit)
 
 
+#parte del codigo dedicada a la eleccion de la puerta
 def puerta():
     texto.set("Al cruzar la puerta te encuentras un alien, tienes dos opciones o hacerte el dormido o salir corriendo")
     texto_boton1.set("Hacerse el dormido")
+    boton_1.config(command=hacerse_el_dormido)
     texto_boton2.set("Correr")
 
+
+def hacerse_el_dormido():
+    texto.set("El alien te ha encontrado y aunque estes dormido te va a ejecutar, HAS MUERTO") #a cambiar segun veamos 
+    texto_boton1.set("salir")
+    boton_1.config(command=quit)
+    texto_boton2.set("reiniciar")
+    boton_2.config(command=pregunta_inicial)
+
+
+def correr():
+    texto.set("Consigues escapar sin que el alien te vea") #Cuando estemos todos decidiremos esto
+    texto_boton1.set("??????????????")
+    boton_1.config()
+    texto_boton2.set("???????????????")
+    boton_2.config()
+
+    
 
 
 pregunta_inicial()
