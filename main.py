@@ -6,6 +6,7 @@ from threading import Timer
 from tkinter import filedialog, Text
 from tkinter import *
 import os
+import keyboard
 
 #empieza la parte de inicio de la UI
 root = tkinter.Tk()
@@ -25,6 +26,17 @@ imagen_luagar.pack(expand=1, fill=tkinter.BOTH)
 
 imagen = tkinter.Label(imagen_luagar, image=i)
 
+
+desplegable_texto = tkinter.StringVar()
+desplegable_texto.set("")
+
+desplegable_texto2 = tkinter.StringVar()
+desplegable_texto.set("")
+
+
+deplegable = tkinter.Frame(imagen_luagar, bg="black")
+lugar_texto_desplegable1 = tkinter.Label(deplegable, textvariable=desplegable_texto, fg="white", bg="black")
+lugar_texto_desplegable2 = tkinter.Label(deplegable, textvariable=desplegable_texto2, fg="white", bg="black")
 
 texto_palo = tkinter.Label(imagen_luagar, text="Tienes el palo", fg="gold")
 
@@ -52,14 +64,53 @@ boton_1.pack(side="left")
 boton_2 = tkinter.Button(imagen_luagar, textvariable=texto_boton2)
 boton_2.pack(side="right")
 
+
 # acaba la parte de inicio de la UI
 
 #empieza la logica
 p = False
 p2 = False
 p3 = False
+i = 1
+
 has_cogido_palo = False
 
+
+
+def inventario(callback):
+    global i
+    global has_cogido_palo
+    print("pulsado")
+    if i == 1:
+       deplegable.place(relheight=1, relwidth=0.8, relx=0.1, rely=0.1)
+       lugar_texto_desplegable1.pack(side="top")
+       desplegable_texto.set("INVENTARIO")
+       lugar_texto_desplegable2.place(rely=0.2)
+       if has_cogido_palo == True:
+           desplegable_texto2.set("-Un palo! Espero que sirva")
+       t3 = Timer(0.1, la_i)
+       t3.start()
+    
+    if i == 2:
+        deplegable.place_forget()
+        t4 = Timer(0.1, la_i2)
+        t4.start()
+        i = 1
+    return i
+
+keyboard.on_press_key("i", inventario)
+
+
+def la_i():
+    global i
+    i = 2
+    return i
+
+
+def la_i2():
+    global i
+    i = 1
+    return i
 
 
 def pregunta_inicial():
