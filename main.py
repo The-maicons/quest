@@ -38,7 +38,8 @@ deplegable = tkinter.Frame(imagen_luagar, bg="black")
 lugar_texto_desplegable1 = tkinter.Label(deplegable, textvariable=desplegable_texto, fg="white", bg="black")
 lugar_texto_desplegable2 = tkinter.Label(deplegable, textvariable=desplegable_texto2, fg="white", bg="black")
 
-texto_palo = tkinter.Label(imagen_luagar, text="Tienes el palo", fg="gold")
+texto_palo = tkinter.Label(imagen_luagar, text="Tienes el palo", fg="white", bg="black")
+subindice_texto_palo = tkinter.Label(imagen_luagar, text="Pulsa i para abrir el inventario", fg="white", font=(None, 7), bg="black")
 
 texto_lugar = tkinter.Frame(root, bg="blue")
 texto_lugar.place(relwidth=0.8, relheight=0.2, relx=0.1, rely=0.8)
@@ -50,10 +51,10 @@ texto = tkinter.StringVar()
 texto.set("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas sollicitudin ac augue nec ultrices.\n Aliquam lobortis erat vitae nulla commodo aliquam. Sed rutrum, diam id dignissim dapibus, sem justo \ncommodo.")
 
 texto_boton1 = tkinter.StringVar()
-texto_boton1.set("test")
+texto_boton1.set("")
 
 texto_boton2 = tkinter.StringVar()
-texto_boton2.set("test")
+texto_boton2.set("")
 
 texto_label = tkinter.Label(texto_lugar, bg="blue", fg="white", textvariable=texto)
 texto_label.pack(side="top")
@@ -74,7 +75,7 @@ p3 = False
 i = 1
 
 has_cogido_palo = False
-
+multiplicacion = 0
 
 
 def inventario(callback):
@@ -116,7 +117,10 @@ def la_i2():
 def pregunta_inicial():
     global p
     global numero_random 
-    numero_random = random.randint(1, 100)
+   
+    numero_random = random.randint(100, 500)
+    
+    
     if p == False:
         texto.set("Bienvenido al nuestro quest! Cuando vimos lo que nos habias dicho hacer, lo decidimos hacer \n cada uno un script y luego enviartelos todos, a la semana de empezar nos dijimos \n-Y si lo hacemos a lo grande!- Y decidimos aprender a hacer GUI con tkinter, y aqui esta \n nuestra version del juego, esperamos que la disfrutes! ")
         t = Timer(1, pregunta_inicial) #modificar a 10 cuando se acabe el testeo
@@ -130,11 +134,16 @@ def pregunta_inicial():
         texto_boton2.set("no")
         boton_2.config(command=quit)
     return numero_random
+   
     
 
 
 def pregunta_11():
     global p2
+    global multiplicacion
+    global numero_random
+    multiplicacion = 13 * numero_random
+    print(multiplicacion)
     texto_boton1.set("")
     texto_boton2.set("")
     if p2 == False:
@@ -148,7 +157,7 @@ def pregunta_11():
         #imagen.config(image=i3)
         t2 = Timer(3, pregunta_12)
         t2.start()
-
+    return multiplicacion
 
    
 
@@ -188,16 +197,17 @@ def no_palo():
         boton_1.config(command=revisar)
         texto_boton2.set("")
         boton_2.config(command=None)
-        return numero_random
-
+        
 
 def destruccion():
     texto_palo.place_forget()
+    subindice_texto_palo.place_forget()
 
 
 def si_palo():
     global p3
     global has_cogido_palo
+
     texto_palo.place()
     has_cogido_palo = True
     if p3 == False:
@@ -206,7 +216,8 @@ def si_palo():
         t2.start()
         p3 = True
         texto_palo.place(rely=0.1)
-        texto_palo.after(5000, destruccion) #se hace asi para que sea como una notificacion, porque tengo planteado hacer boton de inventario (I)
+        subindice_texto_palo.place(rely=0.15)
+        texto_palo.after(5000, destruccion) #se hace asi para que sea como una notificacion
     elif p3 == True:
         texto.set(f"-Hola forastero, me gustaria que respondieras a una simple pregunta cuanto es 13 x {numero_random}")
         caja_input.pack(side="bottom")
@@ -218,17 +229,22 @@ def si_palo():
 
 
 def revisar():
-    resultado_correcto = 13*numero_random
-    resultado = caja_input.get()
+    global multiplicacion
+    
+    resultado = int(caja_input.get())
+    
+
+
     caja_input.pack_forget()
-    if resultado == resultado_correcto:
+    print(multiplicacion)
+    if resultado == multiplicacion:
         texto.set("Como la rata ve que tienes potencial te lleva a un experimento en donde mueres dolorosamente") #cambiar cuando se nos ocurra algo
         texto_boton1.set("reinicar")
         boton_1.config(command=pregunta_inicial)
         texto_boton2.set("salir")
         boton_2.config(command=quit)
-    elif resultado != resultado_correcto:
-        texto.set("La rata sorprendida se va corriendo") #cambiar historia segun se nos ocurra
+    elif resultado != multiplicacion:
+        texto.set("La rata con cara de decepcion te mira directamente a los ojos y sale corriendo") #cambiar historia segun se nos ocurra
         texto_boton1.set("???????")
         boton_1.config(command=None)
         texto_boton2.set("???????")
@@ -241,6 +257,7 @@ def puerta():
     texto_boton1.set("Hacerse el dormido")
     boton_1.config(command=hacerse_el_dormido)
     texto_boton2.set("Correr")
+    boton_2.config(command=correr)
 
 
 def hacerse_el_dormido():
