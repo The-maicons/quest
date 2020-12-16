@@ -73,7 +73,7 @@ p = False
 p2 = False
 p3 = False
 i = 1
-
+ent = 1
 has_cogido_palo = False
 multiplicacion = 0
 
@@ -100,6 +100,8 @@ def inventario(callback):
     return i
 
 keyboard.on_press_key("i", inventario)
+
+
 
 
 def la_i():
@@ -175,28 +177,39 @@ def pregunta_12():
 
 # Parte del codigo dedicada a la eleccion de la escotilla
 def escotilla():
+     
     texto.set("Al cruzar la escotilla te encuentras un palo, lo quieres recoger?")
     texto_boton1.set("Si")
     boton_1.config(command=si_palo)
     texto_boton2.set("No")
     boton_2.config(command=no_palo)
+    ent = 3
+ 
 
 
 def no_palo():
     global p3
     global has_cogido_palo
+    boton_1.pack_forget()
+    boton_2.pack_forget()
+    
     if p3 == False:
         texto.set("Al salir de la tuberia debajo de la escotilla, te encuentras una rata la cual te dice:")
         t2 = Timer(3, si_palo)
         t2.start()
         p3 = True
     elif p3 == True:
+        keyboard.on_press_key("enter", revisar)
         texto.set(f"-Hola forastero, me gustaria que respondieras a una simple pregunta cuanto es 13 x {numero_random}")
         caja_input.pack(side="bottom")
         texto_boton1.set("confirmar")
         boton_1.config(command=revisar)
         texto_boton2.set("")
         boton_2.config(command=None)
+       
+    
+
+       
         
 
 def destruccion():
@@ -207,6 +220,9 @@ def destruccion():
 def si_palo():
     global p3
     global has_cogido_palo
+    boton_1.pack_forget()
+    boton_2.pack_forget()
+    
 
     texto_palo.place()
     has_cogido_palo = True
@@ -219,20 +235,24 @@ def si_palo():
         subindice_texto_palo.place(rely=0.15)
         texto_palo.after(5000, destruccion) #se hace asi para que sea como una notificacion
     elif p3 == True:
+        keyboard.on_press_key("enter", revisar)
         texto.set(f"-Hola forastero, me gustaria que respondieras a una simple pregunta cuanto es 13 x {numero_random}")
         caja_input.pack(side="bottom")
         texto_boton1.set("confirmar")
         boton_1.config(command=revisar)
         texto_boton2.set("")
         boton_2.config(command=None)
+        
+        
     return has_cogido_palo
 
 
-def revisar():
+def revisar(callback):
     global multiplicacion
     
     resultado = int(caja_input.get())
-    
+    boton_1.pack(side="left")
+    boton_2.pack(side="right")
 
 
     caja_input.pack_forget()
