@@ -238,7 +238,7 @@ def si_palo():
         keyboard.on_press_key("enter", revisar)
         texto.set(f"-Hola forastero, me gustaria que respondieras a una simple pregunta cuanto es 13 x {numero_random}")
         caja_input.pack(side="bottom")
-        texto_boton1.set("confirmar")
+        texto_boton1.set("")
         boton_1.config(command=revisar)
         texto_boton2.set("")
         boton_2.config(command=None)
@@ -249,6 +249,7 @@ def si_palo():
 
 def revisar(callback):
     global multiplicacion
+    global has_cogido_palo
     
     resultado = int(caja_input.get())
     boton_1.pack(side="left")
@@ -259,17 +260,38 @@ def revisar(callback):
     print(multiplicacion)
     if resultado == multiplicacion:
         texto.set("Como la rata ve que tienes potencial te lleva a un experimento en donde mueres dolorosamente") #cambiar cuando se nos ocurra algo
-        texto_boton1.set("reinicar")
+        texto_boton1.set("reiniciar")
         boton_1.config(command=pregunta_inicial)
         texto_boton2.set("salir")
         boton_2.config(command=quit)
     elif resultado != multiplicacion:
         texto.set("La rata con cara de decepcion te mira directamente a los ojos y sale corriendo") #cambiar historia segun se nos ocurra
-        texto_boton1.set("???????")
-        boton_1.config(command=None)
-        texto_boton2.set("???????")
-        boton_2.config(command=quit)
+        t6 = threading.Timer(3, revisar_palo)
+        t6.start()
 
+
+def revisar_palo():
+    global has_cogido_palo
+    if has_cogido_palo == True:
+        perro_palo()
+    else:
+        perro_no_palo()
+
+def perro_palo():
+    global has_cogido_palo
+    texto.set("Te ecuentras a un perro mutante de dos cabezas, le quieres tirar el palo?")
+    has_cogido_palo = False
+    texto_boton1.set("Si")
+    boton_1.config(command=None)
+    texto_boton2.set("No")
+    boton_2.config(command=None)
+
+def perro_no_palo():
+    texto.set("Te ecuentras a un perro mutante de dos cabezas, te planteas tirarle un palo pero te acuerdas de que no lo recogiste, intentas salir corriendo pero el perro corre mas que tu y te devora")
+    texto_boton1.set("Salir")
+    boton_1.config(command=quit)
+    texto_boton2.set("reinciar")
+    boton_2.config(command=pregunta_inicial)
 
 #parte del codigo dedicada a la eleccion de la puerta
 def puerta():
